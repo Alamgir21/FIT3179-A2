@@ -1,0 +1,105 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+              "url": "https://raw.githubusercontent.com/Alamgir21/FIT3179-A2/refs/heads/main/Data/Arrivals%20in%20Australia%20by%20citizenship%20.csv"
+            },
+  "vconcat":[
+    {
+      "width": 800,
+      "height": 450,
+      "data": {
+        "url": "https://raw.githubusercontent.com/Alamgir21/FIT3179-A2/refs/heads/main/Map_files/ne_110m_admin_0_countries.topojson",
+        "format": {"type": "topojson", "feature": "ne_110m_admin_0_countries"}
+      },
+      "title": "Migrants into Australia by citizenship in September 2017",
+      "projection": {"type": "equalEarth"},
+      "layer": [
+        {
+          "transform": [
+            {
+              "calculate": "'Data is not available in ' + datum.properties.NAME",
+              "as": "NA"
+            }
+          ],
+          "mark": {"type": "geoshape", "fill": "lightgray", "stroke": "white"},
+          "encoding": {"tooltip": {"field": "NA"}}
+        },
+        {
+          "data": {
+            "url": "https://raw.githubusercontent.com/FIT3179/Vega-Lite/main/7_others/oceans.topojson",
+            "format": {"type": "topojson", "feature": "oceans"}
+          },
+          "mark": {"type": "geoshape", "fill": "skyblue"}
+        },
+        {
+          "data": {
+            "url": "https://raw.githubusercontent.com/FIT3179/Vega-Lite/main/2_symbol_map/js/WorldMapWithGraticules.topojson",
+            "format": {"type": "topojson", "feature": "ne_110m_graticules_30"}
+          },
+          "mark": {"type": "geoshape", "fill": null, "stroke": "lightgray"}
+        },
+        {
+          "transform": [
+            //{"filter":{"param": "travel_month"}},
+            {
+              "lookup": "properties.NAME",
+              "from": {
+                "data": {
+                  "url": "https://raw.githubusercontent.com/Alamgir21/FIT3179-A2/refs/heads/main/Data/Arrivals%20in%20Australia%20by%20citizenship%20.csv"
+                },
+                "key": "Country of citizenship(a)",
+                "fields": ["1/08/2017"]
+              }
+            }
+          ],
+          "mark": {"type": "geoshape", "stroke": "antiquewhite"},
+          "encoding": {
+            "color": {
+              "field": "1/08/2017",
+              "type": "quantitative",
+              "scale": {
+                "type": "threshold",
+                "domain": [10, 100, 500, 1000],
+                "range": ["#fdbe85", "#fd8d3c", "#e6550d", "#a63603"]
+              },
+              "title": "Migrants"
+            },
+            "tooltip": [
+              {"field": "properties.NAME", "type": "nominal", "title": "Country"},
+              {"field": "1/08/2017", "type": "quantitative", "title": "Migrants"}
+            ]
+          }
+        }
+    ]
+  },
+  {
+    "width": 800,
+    "height": 450,
+      "transform": [
+        {"filter": "datum['Country of citizenship(a)'] != 'Australia'"},
+        {"fold": [
+          "1/09/2016","1/10/2016","1/11/2016","1/12/2016","1/01/2017","1/02/2017","1/03/2017","1/04/2017","1/05/2017","1/06/2017","1/07/2017","1/08/2017","1/09/2017","1/10/2017","1/11/2017","1/12/2017","1/01/2018","1/02/2018","1/03/2018","1/04/2018","1/05/2018","1/06/2018","1/07/2018","1/08/2018","1/09/2018","1/10/2018","1/11/2018","1/12/2018","1/01/2019","1/02/2019","1/03/2019","1/04/2019","1/05/2019","1/06/2019","1/07/2019","1/08/2019","1/09/2019","1/10/2019","1/11/2019","1/12/2019","1/01/2020","1/02/2020","1/03/2020","1/04/2020","1/05/2020","1/06/2020","1/07/2020","1/08/2020","1/09/2020","1/10/2020","1/11/2020","1/12/2020","1/01/2021","1/02/2021","1/03/2021","1/04/2021","1/05/2021","1/06/2021"
+        ], "as": ["Month", "Arrivals"]},
+        {
+          "calculate": "replace(datum.Arrivals, /,/g, '')",
+          "as": "ArrivalsNum"
+        },
+        {
+          "calculate": "toNumber(datum.ArrivalsNum)",
+          "as": "ArrivalsNum"
+        }
+      ],
+    "mark":"bar",
+    "title":"Total non-Australian arrivals per month",
+    "params": [
+      {
+        "name": "travel_month",
+        "select":{"type": "point","encodings": ["x"]}
+      }
+    ]
+  }
+  ]
+    
+  
+  
+}
