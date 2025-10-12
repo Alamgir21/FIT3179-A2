@@ -4,14 +4,8 @@
     "url": "https://raw.githubusercontent.com/Alamgir21/FIT3179-A2/refs/heads/main/Data/Arrivals%20in%20Australia%20by%20citizenship%20long%20format.csv"
   },
   "transform": [
-                {
-                  "calculate": "toDate(datum.Date, '%d/%m/%y')",
-                  "as": "MonthDate"
-                },
-                {
-                  "calculate": "timeFormat(datum.MonthDate, '%Y-%d')",
-                  "as": "YearMonth"
-                }
+    {"calculate": "toDate(datum.Date, '%d/%m/%y')", "as": "MonthDate"},
+    {"calculate": "timeFormat(datum.MonthDate, '%Y-%d')", "as": "YearMonth"}
   ],
   "params": [
     {
@@ -151,30 +145,38 @@
       "title": "Total tourists in Australia Per Month that are non-Australian citizens",
       "transform": [
         {"filter": "datum.Country !== 'Australia'"},
-        {"aggregate": [{"op": "sum","field": "Arrivals","as": "arrivals_sum"}],"groupby": ["YearMonth"]}
+        {
+          "aggregate": [
+            {"op": "sum", "field": "Arrivals", "as": "arrivals_sum"}
+          ],
+          "groupby": ["YearMonth"]
+        }
       ],
-      "mark":"bar",
+      "mark": "bar",
       "encoding": {
-        "x":{
-          "field":"YearMonth",
+        "x": {
+          "field": "YearMonth",
           "type": "ordinal",
-          "axis":{"title":"Date"}
+          "axis": {"title": "Date"}
         },
-        "y":{
-          "field":"arrivals_sum",
+        "y": {
+          "field": "arrivals_sum",
           "type": "quantitative",
-          "axis":{"tickBand":"center","grid": false,"title":"Sum of arrivals per month"}
+          "axis": {
+            "tickBand": "center",
+            "grid": false,
+            "title": "Sum of arrivals per month"
+          }
         },
         "tooltip": [
-              {"field": "YearMonth",
-               "type": "ordinal", "title": "Date"},
-              {
-                "field": "arrivals_sum",
-                "type": "quantitative",
-                "title": "Migrants",
-                "format": ","
-              }
-            ]
+          {"field": "YearMonth", "type": "ordinal", "title": "Date"},
+          {
+            "field": "arrivals_sum",
+            "type": "quantitative",
+            "title": "Migrants",
+            "format": ","
+          }
+        ]
       }
     }
   ],
