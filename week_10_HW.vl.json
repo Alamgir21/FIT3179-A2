@@ -23,7 +23,7 @@
     {
       "width": 800,
       "height": 450,
-      "title": "Migrants into Australia by citizenship in September 2017",
+      "title": "Migrants into Australia by citizenship over the years",
       "projection": {"type": "equalEarth"},
       "layer": [
         {
