@@ -1,0 +1,130 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "https://raw.githubusercontent.com/Alamgir21/FIT3179-A2/refs/heads/main/Data/Regional%20data/2.3%20Short-term%20visitor%20arrivals%2C%20state%20or%20territory%20of%20stay%20-%20August%202025.csv"
+  },
+  
+  "hconcat": [
+    {
+      "width": 800,
+      "height": 450,
+      "title": "Tourists per Australian state in 2025",
+      "layer": [
+        {
+          "transform": [
+            {
+              "lookup": "Region",
+              "from": {
+                "data": {
+                  "url": "https://raw.githubusercontent.com/Alamgir21/FIT3179-A2/refs/heads/main/Map_files/STE_2021_AUST_GDA2020.json",
+                  "format": {
+                    "type": "topojson",
+                    "feature": "STE_2021_AUST_GDA2020"
+                  }
+                },
+                "key": "properties.STE_NAME21"
+              },
+              "as": "geo"
+            }           
+          ],
+          "encoding": {
+            "shape": {"field": "geo", "type": "geojson"},
+            "tooltip": [
+              {"field": "Region", "type": "nominal", "title": "State:"},
+              {
+                "field": "Number of visitor arrivals",
+                "type": "quantitative",
+                "title": "Tourists:",
+                "format": ","
+              }
+            ],
+            "color": {
+              "field":"Number of visitor arrivals",
+              "type":"nominal",
+              "scale":{
+                "scheme":"set1"
+              }
+              }
+          },
+          "layer": [
+            {"mark": {"type": "geoshape", "stroke": "antiquewhite"}},
+            {
+              "transform": [
+                {
+                  "calculate": "toDate(datum.Date, '%d/%m/%y')",
+                  "as": "MonthDate"
+                },
+                {
+                  "calculate": "timeFormat(datum.MonthDate, '%Y-%d')",
+                  "as": "YearMonth"
+                },
+                                {
+                  "window": [{"op": "rank", "as": "ranking"}],
+                  "sort": [{"field": "Arrivals", "order": "descending"}]
+                },
+                {"filter": "datum.ranking == 1"},
+                {
+                  "calculate": "'The largest number of; arrivals were from '+ datum['Country'] + '; with a total of '+ datum.Arrivals + ' people.'",
+                  "as": "text_anno_raw"
+                },
+                {
+                  "calculate": "split(datum.text_anno_raw, ';')",
+                  "as": "text_annotation"
+                }
+              ],
+              "mark": {
+                "type": "text",
+                "align": "right",
+                "dx": 90,
+                "dy": 120,
+                "baseline": "middle",
+                "fontStyle": "italic",
+                "color": "black"
+              },
+              "encoding": {"text": {"field": "text_annotation"}, "color": {}}
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "width": 800,
+      "height": 450,
+      "title": "Total tourists per state",
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "field": "Region",
+          "type": "nominal",
+          "axis": {"title": "State"}
+        },
+        "y": {
+          "field": "Number of visitor arrivals",
+          "type": "quantitative",
+          "axis": {
+            "tickBand": "center",
+            "grid": false,
+            "title": "Total number of tourists"
+          }
+        },
+        "tooltip": [
+          {"field": "Region", "type": "nominal", "title": "State"},
+          {
+            "field": "Number of visitor arrivals",
+            "type": "quantitative",
+            "title": "Tourists",
+            "format": ","
+          }
+        ],
+        "color":{
+          "field":"Number of visitor arrivals",
+              "type":"nominal",
+              "scale":{
+                "scheme":"set1"
+              }
+        }
+      }
+    }
+  ],
+  "config": {}
+}
