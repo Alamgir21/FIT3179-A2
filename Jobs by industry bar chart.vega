@@ -1,0 +1,37 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "width": 300,
+  "height": 200,
+  "data": {
+    "url": "https://raw.githubusercontent.com/Alamgir21/FIT3179-A2/refs/heads/main/Data/Economic%20data/Change%20in%20tourism%20filled%20jobs%20by%20industry%2C%202022-23%20to%202023-24.csv"
+  },
+  "encoding": {
+    "x": {
+      "type": "quantitative",
+      "field": "Jobs",
+      "title": "Toursim jobs filled ('000)"
+    },
+    "y": {"field": "Shortform", "type": "nominal", "sort": "-x", "title": "Industry"},
+    "tooltip": [
+      {"field": "Industry", "type": "nominal", "title": "Industry"},
+      {
+        "field": "Jobs",
+        "type": "quantitative",
+        "title": "Tourism jobs filled('000)",
+        "format": ","
+      }
+    ]
+  },
+  "layer": [
+    {"mark": {"type": "bar"}},
+    {"mark":{
+      "type": "text",
+      "align":"left",
+      "baseline":"middle",
+      "dx":3
+    },
+    "encoding": {
+      "text":{"field":"Jobs","type": "quantitative"}
+    }}
+    ]
+}
