@@ -1,0 +1,24 @@
+{
+  "vconcat": [
+    {
+      "data": {"url": "data/movies.json"},
+      "mark": "bar",
+      "selection": {"brush": {"type": "interval", "encodings": ["x"]}},
+      "encoding": {
+        "x": {"field": "Major_Genre", "type": "nominal"},
+        "y": {"aggregate": "count", "field": "*", "type": "quantitative"}
+      }
+    },
+    {
+      "data": {"url": "data/movies.json"},
+      "transform": [
+        {"filter": {"selection": "brush"}}
+      ],
+      "mark": "bar",
+      "encoding": {
+        "x": {"field": "IMDB_Rating", "type": "quantitative"},
+        "y": {"aggregate": "count", "field": "*", "type": "quantitative"}
+      }
+    }
+  ]
+}
