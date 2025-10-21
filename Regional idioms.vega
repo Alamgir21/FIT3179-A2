@@ -47,44 +47,7 @@
               "legend": null
               }
           },
-          "layer": [
-            {"mark": {"type": "geoshape", "stroke": "antiquewhite"}},
-            {
-              "transform": [
-                {
-                  "calculate": "toDate(datum.Date, '%d/%m/%y')",
-                  "as": "MonthDate"
-                },
-                {
-                  "calculate": "timeFormat(datum.MonthDate, '%Y-%d')",
-                  "as": "YearMonth"
-                },
-                                {
-                  "window": [{"op": "rank", "as": "ranking"}],
-                  "sort": [{"field": "Arrivals", "order": "descending"}]
-                },
-                {"filter": "datum.ranking == 1"},
-                {
-                  "calculate": "'The largest number of; arrivals were from '+ datum['Country'] + '; with a total of '+ datum.Arrivals + ' people.'",
-                  "as": "text_anno_raw"
-                },
-                {
-                  "calculate": "split(datum.text_anno_raw, ';')",
-                  "as": "text_annotation"
-                }
-              ],
-              "mark": {
-                "type": "text",
-                "align": "right",
-                "dx": 90,
-                "dy": 120,
-                "baseline": "middle",
-                "fontStyle": "italic",
-                "color": "black"
-              },
-              "encoding": {"text": {"field": "text_annotation"}, "color": {}}
-            }
-          ]
+          "mark": {"type": "geoshape", "stroke": "antiquewhite"}
         }
       ]
     },
@@ -92,7 +55,6 @@
       "width": 300,
       "height": 200,
       "title": "Total tourists per state in 2025",
-      "mark": "bar",
       "encoding": {
         "x": {
           "field": "Region",
@@ -124,7 +86,19 @@
                 "scheme":"set1"
               }
         }
-      }
+      },
+      "layer": [
+    {"mark": {"type": "bar"}},
+    {"mark":{
+      "type": "text",
+      "align":"center",
+      "dy":-6
+    },
+    "encoding": {
+      "text":{"field":"Number of visitor arrivals","type": "quantitative","format":","},
+      "color":{"value":"black"}
+    }}
+    ]
     }
   ],
   "config": {}
