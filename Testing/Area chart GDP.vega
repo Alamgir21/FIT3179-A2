@@ -1,0 +1,24 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 800,
+  "height": 450,
+  "data": {
+    "url": "https://raw.githubusercontent.com/Alamgir21/FIT3179-A2/refs/heads/main/Data/Economic%20data/Tourism%20GDP%20long%20format.csv"
+  },
+  "title": "Tourism's share in GDP",
+  "mark":"area",
+  "encoding": {
+    "x":{
+      "timeUnit":"year", "field":"Year",
+      "axis": {"domain": false, "title":"Year"}
+    },
+    "y":{
+      "aggregate":"sum",
+      "field":"Value",
+      "stack":"normalize"
+    },
+    "color":{"field":"Economy"}
+    
+  }
+
+}

@@ -20,7 +20,10 @@
         "title": "Tourism jobs filled('000)",
         "format": ","
       }
-    ]
+    ],
+    "color": {
+        "value": "#1f77b4"
+    }
   },
   "layer": [
     {"mark": {"type": "bar"}},
@@ -31,7 +34,8 @@
       "dx":3
     },
     "encoding": {
-      "text":{"field":"Jobs","type": "quantitative"}
+      "text":{"field":"Jobs","type": "quantitative"},
+      "color":{"value":"black"}
     }}
     ]
 }

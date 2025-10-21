@@ -6,8 +6,8 @@
   
   "hconcat": [
     {
-      "width": 800,
-      "height": 450,
+      "width": 300,
+      "height": 200,
       "title": "Tourists per Australian state in 2025",
       "layer": [
         {
@@ -43,7 +43,8 @@
               "type":"nominal",
               "scale":{
                 "scheme":"set1"
-              }
+              },
+              "legend": null
               }
           },
           "layer": [
@@ -88,9 +89,9 @@
       ]
     },
     {
-      "width": 800,
-      "height": 450,
-      "title": "Total tourists per state",
+      "width": 300,
+      "height": 200,
+      "title": "Total tourists per state in 2025",
       "mark": "bar",
       "encoding": {
         "x": {

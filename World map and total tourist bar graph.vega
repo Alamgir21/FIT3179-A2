@@ -1,5 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  
   "data": {
     "url": "https://raw.githubusercontent.com/Alamgir21/FIT3179-A2/refs/heads/main/Data/Tourists/Tourists%20origin%20normalised.csv"
   },
@@ -22,8 +23,8 @@
   ],
   "vconcat": [
     {
-      "width": 800,
-      "height": 450,
+      "width": 700,
+      "height": 300,
       "title": "Tourists into Australia by citizenship over the years",
       "projection": {"type": "equalEarth"},
       "layer": [
@@ -106,15 +107,6 @@
             {
               "transform": [
                 {
-                  "calculate": "toDate(datum.Date, '%d/%m/%y')",
-                  "as": "MonthDate"
-                },
-                {
-                  "calculate": "timeFormat(datum.MonthDate, '%Y-%d')",
-                  "as": "YearMonth"
-                },
-                {"filter": "datum.YearMonth == Date_selection"},
-                {
                   "window": [{"op": "rank", "as": "ranking"}],
                   "sort": [{"field": "Normalised", "order": "descending"}]
                 },
@@ -131,8 +123,8 @@
               "mark": {
                 "type": "text",
                 "align": "right",
-                "dx": 90,
-                "dy": 120,
+                "dx": 120,
+                "dy": 90,
                 "baseline": "middle",
                 "fontStyle": "italic",
                 "color": "black"
@@ -144,8 +136,8 @@
       ]
     },
     {
-      "width": 800,
-      "height": 450,
+      "width": 700,
+      "height": 300,
       "title": "Total tourists in Australia Per Month that are non-Australian citizens",
       "transform": [
         {
@@ -183,5 +175,7 @@
       }
     }
   ],
-  "config": {}
+  "config": {
+
+  }
 }
