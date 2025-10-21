@@ -1,25 +1,12 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  
   "data": {
-    "url": "https://raw.githubusercontent.com/Alamgir21/FIT3179-A2/refs/heads/main/Data/Tourists/Tourists%20origin%20normalised.csv"
+    "url": "https://raw.githubusercontent.com/Alamgir21/FIT3179-A2/refs/heads/main/Data/Tourists/Tourists%20origin%20normalised.csv",
+    "format": {"type": "csv", "parse": {"Date": "date:%d/%m/%Y"}}
   },
   "transform": [
-    {"calculate": "toDate(datum.Date, '%d/%m/%y')", "as": "MonthDate"},
-    {"calculate": "timeFormat(datum.MonthDate, '%Y-%d')", "as": "YearMonth"},
+    {"calculate": "timeFormat(datum.Date, '%Y-%m')", "as": "YearMonth"},
     {"filter": "datum.Country !== 'Australia'"}
-  ],
-  "params": [
-    {
-      "name": "Date_selection",
-      "value": "2019-09",
-      "bind": {
-        "input": "month",
-        "min": "2016-09",
-        "max": "2021-06",
-        "name": "Date:"
-      }
-    }
   ],
   "vconcat": [
     {
@@ -27,6 +14,7 @@
       "height": 300,
       "title": "Tourists into Australia by citizenship over the years",
       "projection": {"type": "equalEarth"},
+      
       "layer": [
         {
           "data": {
@@ -75,7 +63,9 @@
               },
               "as": "geo"
             },
-            {"filter": "datum.YearMonth == Date_selection"}
+            {
+              "filter": "Month_selector == datum.Date"
+            }
           ],
           "encoding": {
             "shape": {"field": "geo", "type": "geojson"},
@@ -97,9 +87,7 @@
                 "title": "Tourist density",
                 "format": ".2f"
               },
-              {
-                "field":"Raw","type": "quantitative","title":"Tourists","format":","
-              }
+              {"field": "Raw", "type": "quantitative", "title": "Tourists", "format": ","}
             ]
           },
           "layer": [
@@ -139,19 +127,29 @@
       "width": 700,
       "height": 300,
       "title": "Total tourists in Australia Per Month that are non-Australian citizens",
+      "params": [
+    {
+      "name": "Month_selector",
+      "select": {
+        "type": "point",
+        "fields": ["Date"],
+        "on": "click"
+      }
+    }
+  ],
       "transform": [
         {
           "aggregate": [
             {"op": "sum", "field": "Raw", "as": "arrivals_sum"}
           ],
-          "groupby": ["YearMonth"]
+          "groupby": ["Date"]
         }
       ],
-      "mark": "bar",
+      "mark": {"type": "bar", "cursor": "pointer"},
       "encoding": {
         "x": {
-          "field": "YearMonth",
-          "type": "ordinal",
+          "field": "Date",
+          "type": "temporal",
           "axis": {"title": "Date"}
         },
         "y": {
@@ -163,8 +161,12 @@
             "title": "Sum of arrivals per month"
           }
         },
+        "opacity": {
+          "condition": {"param": "Month_selector", "value": 1},
+          "value": 0.5
+        },
         "tooltip": [
-          {"field": "YearMonth", "type": "ordinal", "title": "Date"},
+          {"field": "Date", "type": "temporal", "timeUnit": "yearmonth", "title": "Date"},
           {
             "field": "arrivals_sum",
             "type": "quantitative",
