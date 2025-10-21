@@ -1,0 +1,53 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+
+  "data": {
+    "url": "https://raw.githubusercontent.com/Alamgir21/FIT3179-A2/refs/heads/main/Data/Tourists/Tourists%20origin%20normalised.csv",
+    "format": { "type": "csv", "parse": { "Date": "date:%d/%m/%Y" } }
+  },
+  "transform": [
+    { "calculate": "timeFormat(datum.Date, '%Y-%m')", "as": "YearMonth" },
+    { "filter": "datum.Country !== 'Australia'" },
+    {
+      "aggregate": [{ "op": "sum", "field": "Raw", "as": "arrivals_sum" }],
+      "groupby": ["Date"]
+    }
+  ],
+
+  "width": 700,
+  "height": 300,
+  "title": "Total tourists in Australia Per Month that are non-Australian citizens",
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "field": "Date",
+      "type": "temporal",
+      "axis": { "title": "Date" }
+    },
+    "y": {
+      "field": "arrivals_sum",
+      "type": "quantitative",
+      "axis": {
+        "tickBand": "center",
+        "grid": false,
+        "title": "Sum of arrivals per month"
+      }
+    },
+    "tooltip": [
+      {
+        "field": "Date",
+        "type": "temporal",
+        "timeUnit": "yearmonth",
+        "title": "Date"
+      },
+      {
+        "field": "arrivals_sum",
+        "type": "quantitative",
+        "title": "Tourists",
+        "format": ","
+      }
+    ]
+  },
+
+  "config": {}
+}

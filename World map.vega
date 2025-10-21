@@ -1,0 +1,212 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {
+        "url": "https://raw.githubusercontent.com/Alamgir21/FIT3179-A2/refs/heads/main/Data/Tourists/Tourists%20origin%20normalised.csv",
+        "format": {
+            "type": "csv",
+            "parse": {
+                "Date": "date:%d/%m/%Y"
+            }
+        }
+    },
+    "transform": [
+        {
+            "calculate": "timeFormat(datum.Date, '%Y-%m')",
+            "as": "YearMonth"
+        },
+        {
+            "filter": "datum.Country !== 'Australia'"
+        }
+    ],
+    "params": [
+        {
+            "name": "Date_selection",
+            "value": "2019-09",
+            "bind": {
+                "input": "month",
+                "min": "2016-09",
+                "max": "2021-06",
+                "name": "Date:"
+            }
+        }
+    ],
+    "width": 700,
+    "height": 300,
+    "title": "Tourists into Australia by citizenship over the years",
+    "projection": {
+        "type": "equalEarth"
+    },
+    "layer": [
+        {
+            "data": {
+                "url": "https://raw.githubusercontent.com/Alamgir21/FIT3179-A2/refs/heads/main/Map_files/ne_110m_admin_0_countries.topojson",
+                "format": {
+                    "type": "topojson",
+                    "feature": "ne_110m_admin_0_countries"
+                }
+            },
+            "transform": [
+                {
+                    "calculate": "'Data is not available in ' + datum.properties.NAME",
+                    "as": "NA"
+                }
+            ],
+            "mark": {
+                "type": "geoshape",
+                "fill": "lightgray",
+                "stroke": "white"
+            },
+            "encoding": {
+                "tooltip": {
+                    "field": "NA"
+                }
+            }
+        },
+        {
+            "data": {
+                "url": "https://raw.githubusercontent.com/FIT3179/Vega-Lite/main/7_others/oceans.topojson",
+                "format": {
+                    "type": "topojson",
+                    "feature": "oceans"
+                }
+            },
+            "mark": {
+                "type": "geoshape",
+                "fill": "skyblue"
+            }
+        },
+        {
+            "data": {
+                "url": "https://raw.githubusercontent.com/FIT3179/Vega-Lite/main/2_symbol_map/js/WorldMapWithGraticules.topojson",
+                "format": {
+                    "type": "topojson",
+                    "feature": "ne_110m_graticules_30"
+                }
+            },
+            "mark": {
+                "type": "geoshape",
+                "fill": null,
+                "stroke": "lightgray"
+            }
+        },
+        {
+            "transform": [
+                {
+                    "lookup": "Country",
+                    "from": {
+                        "data": {
+                            "url": "https://raw.githubusercontent.com/Alamgir21/FIT3179-A2/refs/heads/main/Map_files/ne_110m_admin_0_countries.topojson",
+                            "format": {
+                                "type": "topojson",
+                                "feature": "ne_110m_admin_0_countries"
+                            }
+                        },
+                        "key": "properties.NAME"
+                    },
+                    "as": "geo"
+                },
+                {
+                    "filter": "datum.YearMonth == Date_selection"
+                }
+            ],
+            "encoding": {
+                "shape": {
+                    "field": "geo",
+                    "type": "geojson"
+                },
+                "color": {
+                    "field": "Normalised",
+                    "type": "quantitative",
+                    "scale": {
+                        "type": "threshold",
+                        "domain": [
+                            1,
+                            10,
+                            100,
+                            200
+                        ],
+                        "range": [
+                            "#fdbe85",
+                            "#fd8d3c",
+                            "#e6550d",
+                            "#a63603"
+                        ]
+                    },
+                    "title": "Tourists"
+                },
+                "tooltip": [
+                    {
+                        "field": "Country",
+                        "type": "nominal",
+                        "title": "Country"
+                    },
+                    {
+                        "field": "Normalised",
+                        "type": "quantitative",
+                        "title": "Tourist density",
+                        "format": ".2f"
+                    },
+                    {
+                        "field": "Raw",
+                        "type": "quantitative",
+                        "title": "Tourists",
+                        "format": ","
+                    }
+                ]
+            },
+            "layer": [
+                {
+                    "mark": {
+                        "type": "geoshape",
+                        "stroke": "antiquewhite"
+                    }
+                },
+                {
+                    "transform": [
+                        {
+                            "window": [
+                                {
+                                    "op": "rank",
+                                    "as": "ranking"
+                                }
+                            ],
+                            "sort": [
+                                {
+                                    "field": "Normalised",
+                                    "order": "descending"
+                                }
+                            ]
+                        },
+                        {
+                            "filter": "datum.ranking == 1"
+                        },
+                        {
+                            "calculate": "'The largest number of; arrivals were from '+ datum['Country'] + '; with a total of '+ datum.Raw + ' people.'",
+                            "as": "text_anno_raw"
+                        },
+                        {
+                            "calculate": "split(datum.text_anno_raw, ';')",
+                            "as": "text_annotation"
+                        }
+                    ],
+                    "mark": {
+                        "type": "text",
+                        "align": "right",
+                        "dx": 120,
+                        "dy": 90,
+                        "baseline": "middle",
+                        "fontStyle": "italic",
+                        "color": "black"
+                    },
+                    "encoding": {
+                        "text": {
+                            "field": "text_annotation"
+                        },
+                        "color": {}
+                    }
+                }
+            ]
+        }
+    ],
+    "config": {}
+}
