@@ -18,7 +18,7 @@
     text-align: center;
     font-weight: bold;
     margin-bottom: 5px;
-    background-color: aquamarine;
+    font-size: 15;
 }
 #body {
     background-color: aliceblue ;
@@ -65,7 +65,7 @@
 #header h1 {
     margin: 0;
     font-weight: 800;
-    font-size: 1.8rem;
+    font-size: 3rem;
     color: #012a4a;
     letter-spacing: -0.5px;
 }
@@ -81,7 +81,7 @@
     padding: 12px;
     border-radius: 8px;
     box-shadow: 0 8px 20px rgba(2,6,23,0.06);
-    margin-bottom: 18px;
+    margin-bottom: 8px;
     min-height: 320px;
     overflow: hidden;
 }
