@@ -19,10 +19,10 @@
     "url": "https://raw.githubusercontent.com/Alamgir21/FIT3179-A2/refs/heads/main/Data/Economic%20data/Tourism%20GDP%20long%20format.csv"
   },
   "transform": [
-    {"filter":"datum.Year == Year_selection"}
+    {"filter":"datum.Year == Year_selection"},
+    {"calculate": "format(datum.Value, ',') + '$'", "as": "text_annotation"}
   ],
   "title": "Tourism's share in GDP",
-  "mark":{"type":"arc", "tooltip":true},
   "encoding": {
     "theta":{
       "field":"Value","type": "quantitative","stack":"normalize"
@@ -36,9 +36,13 @@
       {"field":"Economy","type": "nominal","title":"Sector"},
       {"field":"Value",
       "type": "quantitative",
-      "title":"Gross Domestic Product Per Capita contribution","format":","
+      "title":"Gross Domestic Product Per Capita contribution $","format":","
       }
     ]
-  }
+  },"layer": [
+    {"mark":{"type":"arc", "tooltip":true,"radius":70}},
+    {"mark":{"type": "text","radius":80},
+    "encoding":{"text": {"field":"text_annotation"}}}
+  ]
 
 }

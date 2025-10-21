@@ -5,7 +5,9 @@
         "format": {
             "type": "csv",
             "parse": {
-                "Date": "date:%d/%m/%Y"
+                "Date": "date:%d/%m/%Y",
+                "Normalised": "number",
+                "Raw": "number"
             }
         }
     },
@@ -132,7 +134,8 @@
                             "#a63603"
                         ]
                     },
-                    "title": "Tourists"
+                    "title": "Tourist density",
+                    "legend":{"orient":"right"}
                 },
                 "tooltip": [
                     {
@@ -172,7 +175,7 @@
                             ],
                             "sort": [
                                 {
-                                    "field": "Normalised",
+                                    "field": "Raw",
                                     "order": "descending"
                                 }
                             ]
@@ -181,7 +184,7 @@
                             "filter": "datum.ranking == 1"
                         },
                         {
-                            "calculate": "'The largest number of; arrivals were from '+ datum['Country'] + '; with a total of '+ datum.Raw + ' people.'",
+                            "calculate": "'The largest number of; arrivals were from '+ datum['Country'] + '; with a total of '+ format(datum.Raw, ',') + ' people.'",
                             "as": "text_anno_raw"
                         },
                         {

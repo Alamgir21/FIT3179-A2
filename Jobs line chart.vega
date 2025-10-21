@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "width": 300,
   "height": 200,
+  "title":"Number of tourism jobs filled from 2016-2023",
   "data": {"url": "https://raw.githubusercontent.com/Alamgir21/FIT3179-A2/refs/heads/main/Data/Economic%20data/Filled%20jobs%2C%20comparison%20of%20tourism%20to%20whole%20economy.csv"},
   "mark": {
     "type": "area",

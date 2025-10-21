@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "width": 300,
   "height": 200,
+  "title":" Number of tourism jobs filled by industry 2025",
   "data": {
     "url": "https://raw.githubusercontent.com/Alamgir21/FIT3179-A2/refs/heads/main/Data/Economic%20data/Change%20in%20tourism%20filled%20jobs%20by%20industry%2C%202022-23%20to%202023-24.csv"
   },
@@ -11,7 +12,7 @@
       "field": "Jobs",
       "title": "Toursim jobs filled ('000)"
     },
-    "y": {"field": "Shortform", "type": "nominal", "sort": "-x", "title": "Industry"},
+    "y": {"field": "Shortform", "type": "nominal", "sort": "-x", "title": null},
     "tooltip": [
       {"field": "Industry", "type": "nominal", "title": "Industry"},
       {
